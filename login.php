@@ -15,19 +15,20 @@
     $query->fetch();
     $response =[];
 
-    if ($num_rows == 0) {
-        $response['response'] = "user not found";
-    } else {
+    if ($num_rows > 0) {
         if (password_verify($password, $hashed_password)) {
             $_SESSION['loggedIn'] = true;
             $_SESSION['name'] = $name;
             $_SESSION['email'] = $email;
-            $_SESSION['user_id'] = $id;
+            $_SESSION['id'] = $id;
             $response['status']='user logged in';
-            $response['name']='name';
+            $response['email']=$email;
+            $response['user_type_id']=$user_type_id;
         } else {
             $response["status"] = 'Incorrect password';
         }
+    } else{
+        $response['status'] = "user not found";
     }
     
     echo json_encode($response);
