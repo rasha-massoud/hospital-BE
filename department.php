@@ -35,20 +35,32 @@
     $check_room_id->store_result();
     $room_id_exists = $check_room_id->num_rows();
 
-    if ($room_id_exists > 0 && $department_id_exists > 0 && $user_id_exists > 0 && $hospital_id_exists > 0) {
-        $query = $mysqli->prepare('insert into user_departments(user_id, department_id ,hospital_id ) values(?,?,?)');
-        $query->bind_param('iii', $user_id, $department_id, $hospital_id);
-        $query->execute();
+    $check_bed_number = $mysqli->prepare('select number_beds from rooms where id=?');
+    $check_bed_number->bind_param('i', $room_id);
+    $check_bed_number->execute();
+    $check_bed_number->store_result();
+    $bed_id_exists = $check_bed_number->num_rows();
 
-        $query = $mysqli->prepare('insert into user_rooms(user_id, room_id, datetime_entered, datetime_left, bed_number) values(?,?,?,?,?)');
-        $query->bind_param('iisss', $user_id, $room_id, $datetime_entered, $datetime_left, $bed_number);
-        $query->execute();
+    if($bed_id_exists){
+        $check_bed_number->bind_result($number_beds);
+        $check_bed_number->fetch();
+        if ($number_beds < $bed_number) {
+            $response['status'] = "fail";
+        }elseif ($room_id_exists > 0 && $department_id_exists > 0 && $user_id_exists > 0 && $hospital_id_exists > 0){
 
-        $response['status'] = "success";
-    } else {
-        $response['status'] = "failed";
+            $query = $mysqli->prepare('insert into user_departments(user_id, department_id ,hospital_id ) values(?,?,?)');
+            $query->bind_param('iii', $user_id, $department_id, $hospital_id);
+            $query->execute();
+
+            $query = $mysqli->prepare('insert into user_rooms(user_id, room_id, datetime_entered, datetime_left, bed_number) values(?,?,?,?,?)');
+            $query->bind_param('iisss', $user_id, $room_id, $datetime_entered, $datetime_left, $bed_number);
+            $query->execute();
+
+            $response['status'] = "success";
+        } else {
+            $response['status'] = "failed";
+        }
     }
-    
     echo json_encode($response);
 
 ?>
