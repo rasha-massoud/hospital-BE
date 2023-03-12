@@ -22,10 +22,21 @@
         $hospital_id_exists = $check_hospital_id->num_rows();
 
         if ($user_id_exists > 0 && $hospital_id_exists > 0) {
-            $query = $mysqli->prepare('insert into hospital_users(hospital_id ,user_id , is_active, date_joined, date_left) values(?,?,?,?,?)');
-            $query->bind_param('iiiss', $hospital_id, $user_id, $is_active, $date_joined, $date_left);
-            $query->execute();
-            $response['status'] = "success";
+            $check_patient_id = $mysqli->prepare('select user_id from patients_info where user_id=?');
+            $check_patient_id->bind_param('i', $user_id);
+            $check_patient_id->execute();
+            $check_patient_id->store_result();
+            $user_id_exists = $check_patient_id->num_rows();
+            if($user_id_exists==0){
+                $query = $mysqli->prepare('insert into hospital_users(hospital_id ,user_id , is_active, date_joined, date_left) values(?,?,?,?,?)');
+                $query->bind_param('iiiss', $hospital_id, $user_id, $is_active, $date_joined, $date_left);
+                $query->execute();
+                $response['status'] = "success";
+            }
+            else{
+                $response['status'] = "failed";
+
+            }
         } else {
             $response['status'] = "failed";
         }
