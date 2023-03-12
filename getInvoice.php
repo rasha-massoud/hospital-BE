@@ -23,8 +23,11 @@
                 "EHR" => $EHR,
             ];
         }
-
-        echo json_encode($response);
+    }
+    else{
+        $response['status']= "Not found patient id";
     } 
+    echo json_encode($response);
+
 ?>
 
