@@ -1,6 +1,5 @@
 <?php
     include("connection.php"); 
-    require_once 'path/to/JWT/library/JWT.php';
     session_start();
 
     $email = $_POST['email'];
@@ -18,18 +17,13 @@
 
     if ($num_rows > 0) {
         if (password_verify($password, $hashed_password)) {
-            $jwt_secret = 'I_AM_THE_SECRET_KEY';
-            $jwt_payload = array(
-                "id" => $id,
-                "email" => $email,
-                "user_type_id" => $user_type_id
-            );
-            $jwt_token = JWT::encode($jwt_payload, $jwt_secret);
-            $_SESSION['jwt_token'] = $jwt_token;
+            $_SESSION['loggedIn'] = true;
+            $_SESSION['name'] = $name;
+            $_SESSION['email'] = $email;
+            $_SESSION['id'] = $id;
             $response['status']='user logged in';
             $response['email']=$email;
             $response['user_type_id']=$user_type_id;
-            $response['jwt_token']=$jwt_token;
         } else {
             $response["status"] = 'Incorrect password';
         }
