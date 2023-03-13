@@ -7,6 +7,11 @@
     $cost = $_POST['cost'];
     $department_id = $_POST['department_id'];
 
+    if (!isset($_SESSION['id'])) {
+        header('Location: /Hospital_FrontEnd/HTML/login.html');
+        exit;
+    }
+    
     $approved=false;
     $response = [];
 

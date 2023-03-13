@@ -1,6 +1,11 @@
 <?php
     include("connection.php"); 
 
+    if (!isset($_SESSION['id'])) {
+        header('Location: /Hospital_FrontEnd/HTML/login.html');
+        exit;
+    }
+    
     $user_id= $_POST['user_id'];
     $department_id = $_POST['department_id'];
     $hospital_id = $_POST['hospital_id'];

@@ -3,6 +3,11 @@
     session_start();
     // $_SESSION['id'] = $id;
 
+    if (!isset($_SESSION['id'])) {
+        header('Location: /Hospital_FrontEnd/HTML/login.html');
+        exit;
+    }
+    
     $links = [];
     $query = $mysqli->prepare("SELECT * FROM hospital_users");
     $query->execute();

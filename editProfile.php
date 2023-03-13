@@ -9,6 +9,11 @@
 
     $response = [];
 
+    if (!isset($_SESSION['id'])) {
+        header('Location: /Hospital_FrontEnd/HTML/login.html');
+        exit;
+    }
+    
     if(filter_var($email, FILTER_VALIDATE_EMAIL)){
         $response["email_status"] = "The Email Format is Valid!";
     } else {

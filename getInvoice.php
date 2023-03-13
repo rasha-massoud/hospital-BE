@@ -3,6 +3,11 @@
 
     $user_id= $_POST['user_id'];
     
+    if (!isset($_SESSION['id'])) {
+        header('Location: /Hospital_FrontEnd/HTML/login.html');
+        exit;
+    }
+    
     if ( $_SESSION['id'] == $user_id){
         $check_patient_id = $mysqli->prepare('select user_id from patients_info where user_id=?');
         $check_patient_id->bind_param('i', $user_id);

@@ -7,6 +7,11 @@
     $date_joined = $_POST['date_joined'];
     $date_left = $_POST['date_left'];
 
+    if (!isset($_SESSION['id'])) {
+        header('Location: /Hospital_FrontEnd/HTML/login.html');
+        exit;
+    }
+    
     $response = [];
 
     $check_patient_id = $mysqli->prepare('select user_id from patients_info where user_id=?');

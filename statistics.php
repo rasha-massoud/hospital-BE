@@ -4,6 +4,11 @@
     session_start();
     $user_type_id = $_POST['user_type_id'];
     
+    if (!isset($_SESSION['id'])) {
+        header('Location: /Hospital_FrontEnd/HTML/login.html');
+        exit;
+    }
+    
     if ($user_type_id == 1) { // user is a patient
         $query = $mysqli->prepare('SELECT COUNT(*) FROM users WHERE user_type_id = ?');
         $query->bind_param('i', $user_type_id);

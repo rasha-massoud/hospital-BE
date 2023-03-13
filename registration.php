@@ -7,6 +7,11 @@
     $dob = $_POST['dob'];
     $user_type_id = $_POST['user_type_id'];
 
+    if (!isset($_SESSION['id'])) {
+        header('Location: /Hospital_FrontEnd/HTML/login.html');
+        exit;
+    }
+    
     $response = [];
 
     if(filter_var($email, FILTER_VALIDATE_EMAIL)){

@@ -1,7 +1,6 @@
 <?php
     include("connection.php"); 
     session_start();
-    // $_SESSION['id'] = $id;
 
     if (!isset($_SESSION['id'])) {
         header('Location: /Hospital_FrontEnd/HTML/login.html');
